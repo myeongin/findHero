@@ -415,8 +415,7 @@
   	  			"data":formData,
   	  			"processData":false,
   	  			"contentType":false,
-  	  			success:function(data,status,xhr){  	
-  	  				alert(data);
+  	  			success:function(data,status,xhr){  	  	  				
   	  				$('#heroImg').attr("src",'/findhero/resources/hero-img/'+data);
   	  			},
   	  			error:function(xhr,status,err){
