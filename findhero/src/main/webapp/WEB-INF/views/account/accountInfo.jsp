@@ -64,7 +64,7 @@
             <form id="fileform" action="/findhero/account/userImgUpload.action" method="post">
             	<input type="hidden" value="${user.userNo}" name="userNo">
             	<label>		
-              		<img src="/findhero/resources/user-img/${user.userImage }" alt="" class="img-fluid" id="userImg" onerror="this.src='/findhero/resources/img/noimg.png'">
+              		<img src="/findhero/resources/user-img/${user.userImage }" style="width: 100%; height: 300px;" alt="" class="img-fluid" id="userImg" onerror="this.src='/findhero/resources/img/noimg.png'">
               		<input type="file" style="display: none" name="img" id="userImageInput">              	 	
               	</label>               	
              </form> 	
@@ -73,7 +73,7 @@
              <form id="fileform2" action="fileUpload" method="post">
             	<input type="hidden" value="${hero.heroNo}" name="heroNo">
 				<label>		
-              		<img src="/findhero/resources/hero-img/${hero.heroImage }" alt="" class="img-fluid" id="heroImg" onerror="this.src='/findhero/resources/img/noimg.png'">
+              		<img src="/findhero/resources/hero-img/${hero.heroImage }"  style="width: 100%; height: 300px;" alt="" class="img-fluid" id="heroImg" onerror="this.src='/findhero/resources/img/noimg.png'">
               		<input type="file" style="display: none" name="img" id="heroImageInput">              	 	
               	</label> 
               	

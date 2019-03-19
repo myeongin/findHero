@@ -65,7 +65,7 @@
         <div class="col-md-4">
           <div class="card-box-d">
             <div class="card-img-d">
-            	<img src="/findhero/resources/hero-img/${heros.heroImage}" alt="" class="img-d img-fluid" onerror="this.src='/findhero/resources/img/noimg.png'">              
+            	<img src="/findhero/resources/hero-img/${heros.heroImage}" style="width: 100%; height: 300px; " alt="" class="img-d img-fluid" onerror="this.src='/findhero/resources/img/noimg.png'">              
             </div>
             <div class="card-overlay card-overlay-hover">
               <div class="card-header-d">
