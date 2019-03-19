@@ -61,33 +61,57 @@
   <section class="agents-grid grid">
     <div class="container">
       <div class="row">
-      <c:forEach var="hero" items="${heros}">
+      <c:forEach var="heros" items="${heros}">
         <div class="col-md-4">
           <div class="card-box-d">
             <div class="card-img-d">
-            	<img src="/findhero/resources/hero-img/${hero.heroImage}" alt="" class="img-d img-fluid" onerror="this.src='/findhero/resources/img/noimg.png'">              
+            	<img src="/findhero/resources/hero-img/${heros.heroImage}" alt="" class="img-d img-fluid" onerror="this.src='/findhero/resources/img/noimg.png'">              
             </div>
             <div class="card-overlay card-overlay-hover">
               <div class="card-header-d">
                 <div class="card-title-d align-self-center">
                   <h3 class="title-d">
-                    <a href="#" class="link-two">${hero.heroName}</a>
+                    <a href="/findhero/review/review.action?heroNo=${heros.heroNo }" class="link-two">${heros.heroName}</a>
                   </h3>
                 </div>
               </div>
               <div class="card-body-d">
                 <p class="content-d color-text-a">
-                  ${hero.heroAbout }
+                  ${heros.heroAbout }
                 </p>
                 <div class="info-agents color-a">
                   <p>
-                    <strong>Email: </strong>${hero.heroEmail }</p>
+                    <strong>Email: </strong>${heros.heroEmail }</p>
                   <p>
-                    <strong>Phone: </strong>${hero.heroPhone }</p>
+                    <strong>Phone: </strong>
+                          <c:choose>
+                    <c:when test="${not empty hero}"> 
+                  		  ${heros.heroPhone }
+                    </c:when>
+                    <c:otherwise>
+                    	비공개 정보입니다.
+                    </c:otherwise>
+                    
+                    </c:choose>
+                   </p>
                   <p>
-                    <strong>Add: </strong>${hero.heroAdd1 }/${hero.heroAdd2 }/${hero.heroAdd3 }</p>
+                    <strong>Add: </strong>${heros.heroAdd1 }
+                     <c:choose>
+                    <c:when test="${not empty hero}"> 
+                   / ${heros.heroAdd2 } / ${heros.heroAdd3 }
+                    </c:when>
+                    
+                    <c:otherwise>
+                    	
+                    </c:otherwise>
+                    </c:choose>
+                    
+                    
+                   </p>
                   <p>
-                    <strong>field: </strong>${hero.heroField }/${hero.heroField2 }</p>
+                    <strong>Add: </strong>${heros.heroAdd1 }/${heros.heroAdd2 }/${heros.heroAdd3 }</p>
+                  <p>
+                    <strong>field: </strong>${heros.heroField }/${heros.heroField2 }</p>
                 </div>
               </div>
               <div class="card-footer-d">

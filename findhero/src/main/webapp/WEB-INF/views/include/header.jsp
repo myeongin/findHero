@@ -79,12 +79,12 @@
           </li>
 		
 		  <c:choose>
-		  	<c:when test="${not empty user or not empty hero }">
+		  	<c:when test="${not empty sessionScope.user or not empty sessionScope.hero }">
 		  		 <li class="nav-item">
-		  		 	<c:if test="${ not empty user}">
+		  		 	<c:if test="${ not empty sessionScope.user}">
             			<a class="nav-link" href="/findhero/account/serviceList.action?userNo=${user.userNo}">서비스</a>
             		</c:if> 
-            		<c:if test="${not empty hero }">
+            		<c:if test="${not empty sessionScope.hero }">
             			<a class="nav-link" href="/findhero/account/serviceList.action?heroNo=${hero.heroNo}">서비스</a>
             		</c:if>          
           		</li>
@@ -101,12 +101,12 @@
             <a class="nav-link" href="property-grid.html"></a>            
           </li>
           
-		  	<c:if test="${not empty user or not empty hero }">
+		  	<c:if test="${not empty sessionScope.user or not empty sessionScope.hero }">
 		  		 <li class="nav-item">
-		  		 <c:if test="${not empty user }">
+		  		 <c:if test="${not empty sessionScope.user }">
             		<a class="nav-link" href="/findhero/chat/chats.action?userNo=${user.userNo }">채팅</a>
             	</c:if>
-            	<c:if test="${not empty hero }">
+            	<c:if test="${not empty sessionScope.hero }">
             		<a class="nav-link" href="/findhero/chat/chats.action?heroNo=${hero.heroNo }">채팅</a>
             	</c:if>           
           		</li>
@@ -116,7 +116,7 @@
       </div>
      
         <c:choose>
-        	<c:when test="${not empty user or not empty hero}">
+        	<c:when test="${not empty sessionScope.user or not empty sessionScope.hero}">
         			<button type="button" class="btn btn-b-n d-none d-md-block" aria-expanded="false" onclick="location='/findhero/account/logout.action'">        	
         			<span class="fa fa-sign-out" aria-hidden="true">&nbsp;로그아웃</span>
         		</button>
