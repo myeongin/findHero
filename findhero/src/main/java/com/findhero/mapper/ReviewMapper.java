@@ -47,6 +47,8 @@ public interface ReviewMapper {
 	List<ReviewVo> reviewList(HashMap<String, Object> review);
 
 	List<UserVo> selectUserList(int heroNo);
+	
+	int selectUserCountByUserNoAndHeroNo(HashMap<String, Object> params);
 
 	
 	

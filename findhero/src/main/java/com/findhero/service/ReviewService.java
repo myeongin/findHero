@@ -1,5 +1,6 @@
 package com.findhero.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.findhero.vo.HeroVo;
@@ -68,6 +69,8 @@ public interface ReviewService {
 	List<ReviewVo> reviewListService();
 
 	List<UserVo> reviewUserList(int heroNo);
+	
+	int getUserCountByUserNoAndHeroNo(int userNo, int heroNo);
 
 
 	

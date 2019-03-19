@@ -42,20 +42,34 @@ public class ReviewController {
 		// @RequestMapping   클라이언트는 URL로 요청을 전송하고,어노테이션은 URL을 컨트롤러의 메서드와 매핑할 때 사용
 		//요청 URL을 어떤 메서드가 처리할지 여부를 결정하는 것이 바로 "@RequestMapping
 
+	
 		 // 주소 GET으로 heroNo, userNo) 가져오기, 뿌리기, jsp페이지수정 (별점 눌러서내려오게, 불필요한구문 삭제, 해당 HeroNo가져오기.) , 
 	//1.뷰화면(완료)
 	@RequestMapping(value="/review.action",method=RequestMethod.GET)
-	public String review(Model model, int heroNo) {
+	public String review(Model model, int heroNo, HttpSession session) {
+		
+		int count = 0;
+		UserVo user = (UserVo)session.getAttribute("user");
+		if (user != null) {
+			count = reviewService.getUserCountByUserNoAndHeroNo(user.getUserNo(), heroNo);
+		}
 		
 		HeroVo hero = reviewService.selectHeros(heroNo); 	
 		List<ReviewVo> reviewlist = reviewService.reviewListService(heroNo);	
 		
+		
+		// 리뷰평균값 들고오자.
+//		List<ReviewVo> scorelist = reviewService.avgScore(reviewVo);  
 			
-//		List<UserVo> users = reviewService.reviewUserList(heroNo);
-			
+
+		// 서비스에서 부르고 ㅡ> DB. DAO에서 부르고 ㅡ> 리턴해서 와서  ㅡ> 다시 뿌림.
+		
 		model.addAttribute("reviewList", reviewlist);
 //		model.addAttribute("users", users);
 		model.addAttribute("hero", hero);
+		model.addAttribute("authorized", count > 0);
+		
+		
 		
 		return "review/review";
 		
@@ -64,14 +78,21 @@ public class ReviewController {
 	
 //	
 	
-	//3.리뷰쓰기(완료)
+	//2.리뷰쓰기(완료)
 	@RequestMapping(value="review.action",method=RequestMethod.POST,produces ="application/text; charset=utf8")
 	@ResponseBody
-	public String registerReview(ReviewVo reviewVo) {
+	public String registerReview(ReviewVo reviewVo, HttpSession session) {
+		
+		
+		//리뷰  hero와 user 수강된 사람만 쓰기 가능.공사 예정
+		
 		
 		System.out.println(reviewVo.getUserNo());
 		
 		reviewService.registerReview(reviewVo); //Vo 가지고  들어가자
+		
+	
+		
 	
 		return "입력완료";
 	}

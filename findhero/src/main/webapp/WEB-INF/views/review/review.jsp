@@ -2,6 +2,7 @@
 	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +11,9 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <meta content="" name="keywords">
 <meta content="" name="description">
+
+
+
 
 <!-- Favicons -->
 <link href="/findhero/resources/img/favicon.png" rel="icon">
@@ -29,7 +33,7 @@
 
 <!-- Main Stylesheet File -->
 <link href="/findhero/resources/css/style.css" rel="stylesheet">
-
+<link href="/findhero/resources/css/starrating.css" rel="stylesheet">
 <!-- =======================================================
     Theme Name: EstateAgency
     Theme URL: https://bootstrapmade.com/real-estate-agency-bootstrap-template/
@@ -49,7 +53,7 @@
 			<div class="row">
 				<div class="col-md-12 col-lg-8">
 					<div class="title-single-box">
-						<h1 class="title-single">${hero.heroName }</h1>
+						<h1 class="title-single">${hero.heroField2}</h1>
 						<span class="color-text-a">${hero.heroField}</span>
 					</div>
 				</div>
@@ -78,29 +82,71 @@
 				<div class="col-sm-12">
 					<div class="row">
 						<div class="col-md-6">
+								<!-- 히어로사진-->
 							<div class="agent-avatar-box">
-								<%-- <img src="${hero.heroImage}" alt=""
-									class="agent-avatar img-fluid"> --%>
+							
+								<img src="/findhero/resources/rsimg/noimg.png" alt="" class="img-d img-fluid"
+								 onerror="this.src = '/findhero/resources/rsimg/noimg.png'"> 
 							</div>
+							<!-- 히어로사진 끝 -->
+							
 						</div>
 						<div class="col-md-5 section-md-t3">
 							<div class="agent-info-box">
 								<div class="agent-title">
 									<div class="title-box-d">
 										<h3 class="title-d">
-											<br>
+										${hero.heroName}									
 										</h3>
 									</div>
 								</div>
 								<div class="agent-content mb-3">
-									<p class="content-d color-text-a">${hero.heroAbout}</p>
+									<p class="content-d color-text-a"></p>
+									<h3>${hero.heroAbout}</h3>
 									<div class="info-agents color-a">
-										<p>
-											<strong>${ hero.heroNo } </strong> <span class="color-text-a">
-											</span>
-										</p>
+										
+										
+										<br>
+										<div class="info-agents color-a">
+					                    <p>
+					                      <strong>휴대전화 </strong>
+					                      <span class="color-text-a" font-size="16pt">${hero.heroPhone}</span>
+					                    </p>
+					                 
+					                    <p>
+					                      <strong>E-mail </strong>
+					                      <span class="color-text-a" font-size="16pt"> ${hero.heroEmail}</span>
+					                    </p>
+					                    
+					                    <p>
+					                      <strong>서비스지역 </strong>
+					                      <span class="color-text-a" font-size="16pt"> ${hero.heroAdd1} </span>
+					                    </p>
+					                  </div>
+					                  </div>
+					                 
 
 
+										 <!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ히어로채팅으로 이동ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+										 <!-- 혹시모를 예비용 버튼 -->
+										<%-- <div>
+										<a href="/findhero/chat/insert.action?heroNo=${hero.heroNo}&userNo=${user.userNo}" 
+										class="btn btn-outline-warning"><button>히어로와 채팅</button></a>				
+										</div> --%>
+										<!-- 버튼만들기(완료) -->
+										<div>
+										<button type="button" class="btn btn-b-n d-none d-md-block" aria-expanded="false">        	
+        								<span id="go-chatting" data-herono="${hero.heroNo}" data-userno="${user.userNo}" class="fa fa-sign-out" aria-hidden="true">&nbsp;히어로와의 채팅</span>
+        								</button>
+										</div>
+										
+										
+										
+										
+										
+										
+										<!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 끝 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+										
 									</div>
 								</div>
 
@@ -144,13 +190,41 @@
              <c:forEach var="review" items="${reviewList}">
               <li>
                 <div class="comment-avatar">
-                  <img src="img/author-2.jpg" alt="">
+                 <img src="/findhero/resources/rsimg/noimg.png" alt="" class="img-d img-fluid" 
+                 onerror="this.src = '/findhero/resources/rsimg/noimg.png'">
                 </div>
                 <div class="comment-details">
-                  <h4 class="comment-author">
-                  ${ review.userName }
-                  </h4>
-                
+                  <h4 class="comment-author">${ review.userName }</h4> 
+                  
+                  <!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ댓글 평점 별모양구현 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+                  
+                     
+                  	<!-- 점수 /3 나누기. -->
+                  <fmt:formatNumber var="rating" value="${ (review.pro+review.satisfied+review.reliability) / 3 }" pattern=".0"/>
+                  <!-- DB에서 pro +  -->
+                  	<div class="starRev" data-rating="${ rating }">
+						  <span class="starR1 on">별1_왼쪽</span>
+						  <span class="starR2">별1_오른쪽</span>
+						  <span class="starR1">별2_왼쪽</span>
+						  <span class="starR2">별2_오른쪽</span>
+						  <span class="starR1">별3_왼쪽</span>
+						  <span class="starR2">별3_오른쪽</span>
+						  <span class="starR1">별4_왼쪽</span>
+						  <span class="starR2">별4_오른쪽</span>
+						  <span class="starR1">별5_왼쪽</span>
+						  <span class="starR2">별5_오른쪽</span> 
+					</div>&nbsp;
+
+         
+                  
+                  
+                  
+                  <!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ리뷰 평점평균  ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+         		<!-- EL 문법임.  소수점 1자리 -->
+         		 ${ rating }<br>&nbsp;
+         		  
+                  <!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+
                   <span> <fmt:formatDate value="${review.regDate}" pattern="yyyy년 MM월 dd일 a hh:mm"/>
                   </span>
                   <p class="comment-description">
@@ -169,7 +243,9 @@
 
 
 
-<!-- 리뷰작성단 -->
+		<!-- 리뷰작성단 -->		<!--  댓글표현 2번째 방법       -->  
+		<c:if test="${ empty sessionScope.hero and authorized }">
+	<!-- 	<div> -->
 				<div class="col-md-12 section-t8">
 					<div class="title-box-d">
 						<h3 class="title-d">리뷰작성</h3>
@@ -177,23 +253,16 @@
 					</div>
 				</div>
 
-
-
-
-
-
-
-
-
-				<!--ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 리뷰작성칸  ,별점ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+				<!--ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 리뷰 작성칸, 별점 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
 				<form class="form-a" id="comment-data">
 					<div class="row">
-						<div class="col-md-6 mb-3">
+							<div>
+						<!-- <div class="col-md-6 mb-3"> -->
 					
 			
-							<div class="col-md-6 mb-3">
+							<!-- <div class="col-md-6 mb-3"> -->
 								<div class="form-group">
-									<label>전문성</label>
+									<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;전문성</label>
 									
 									<select name="pro" id="pro">
 										<option value="5">★★★★★</option>									
@@ -205,14 +274,14 @@
 								
 								</div>
 
-							</div>
+						<!-- 	</div>
 						</div>
+ -->
 
-
-						<div class="col-md-6 mb-3">
-							<div class="form-group">
-								<label>신뢰성</label>
-							</div>
+					<!-- 	<div class="col-md-6 mb-3"> -->
+							 <div class="form-group">
+								<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;신뢰성</label>
+							<!-- </div> -->
 
 							<select name="reliability" id="reliability" >
 										<option value="5">★★★★★</option>									
@@ -226,10 +295,10 @@
 					
 
 
-					<div class="col-md-6 mb-3">
+					<!-- <div class="col-md-6 mb-3"> -->
 						<div class="form-group">
-							<label>만족도</label>
-						</div>
+							<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;만족도</label>
+						<!-- </div> -->
 						
 						<select name="satisfied" id="satisfied">
 							<option value="5">★★★★★</option>									
@@ -238,6 +307,7 @@
 							<option value="2">★★</option>
 							<option value="1">★</option>
 						</select>
+						</div>
 						</div>						
 					</div>
 			
@@ -246,15 +316,11 @@
 			
 			<!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ리뷰 내용 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
 
-			<div> <!-- reviewVo 이름과 같아야함 name -->
-				<input type="hidden" name="userNo" value="${user.userNo}" />
-				
+			<div> <!-- reviewVo 이름과 같아야함 name,-->
+				<input type="hidden" name="userNo" value="${user.userNo}" />				
 				<input type="hidden" name="heroNo" value="${hero.heroNo}" />
-
 			</div>
-			<div class="col-md-12 mb-3">
-				<div class="form-group"></div>
-			</div>
+			
 
 			<div class="col-md-12 mb-3">
 				<div class="form-group">
@@ -268,53 +334,6 @@
 			</form>
 
 
-
-			
-			<script type="text/javascript">
-		$(function() {
-			
-			
-			
-			$("#submit").on("click", function(event) {
-				
-			
-				
-				var data1 = $("#comment-data").serialize() /* serialize 정리해줌 */
-				/* submit을 누르면  */
-				
-				
-				
-				$.ajax({ /* JSTL처럼 따로 지정해줄필요없다. Jquery안에서 쓸수있다.  달러안에서. 문법아님(함수처럼쓰면댐) */
-
-					//controller로 보낸다
-					url : "review.action", /* 컨트롤러의 */
-					data : data1,  // 위에데이터랑같다.
-					method : "POST",
-					success : function(data, status, xhr) {
-			
-						alert(data);
-					/* 여기서 data는 리턴된값(controller에서.  위에랑다름) */
-						/*  status랑 xhr은 반드시 써줘야함. 그냥 규칙 */
-					
-						//목록 갱신
-						/* alert(data)
-						$("#commentlist").load("getcomment.action");/* 큰 껍데기 */
-								/* 댓글에있던 html요소들을 다시 또 코멘트리스트에 넣음 */
-						/* 코맨트리스 에 삽입 */
-					
-						/* 코멘트 리스트에 있는애들을 (div)애들을 채워주겠다 =  즉 자동새로고침 */
-						/* visitors에있는 애들을   getcomment로 넘어감 */
-						
-					}
-
-				})
-
-			})
-
-		});
-	</script>
-
-
 				<!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ리뷰 내용 끝ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
 
 
@@ -322,6 +341,8 @@
 				<button id="submit" class="btn btn-a">작성
 					완료</button>
 			</div>
+			</div>
+			</c:if>
 
 
 		</div>
@@ -349,6 +370,77 @@
 
 	<!-- Template Main Javascript File -->
 	<script src="/findhero/resources/js/main.js"></script>
+	
+    <script type="text/javascript">
+    
+    $("#submit").on("click", function(event) {
+    	
+    	<c:if test="${ not empty sessionScope.hero }">
+    	alert('전문가는 리뷰를 작성할 수 없습니다.');
+    	return;
+    	</c:if>
+    	
+    	<c:if test="${ not authorized }">
+	    	alert('전문가 ${ hero.heroName }에 대한 리뷰 작성 권한이 없습니다.');
+	    	location.href='/findhero/hero/findhero.action';
+    	return;
+    	</c:if>
+    	
+		
+		var data1 = $("#comment-data").serialize() /* serialize 정리해줌 */
+		/* submit을 누르면  */
+		
+		
+		
+		$.ajax({ /* JSTL처럼 따로 지정해줄필요없다. Jquery안에서 쓸수있다.  달러안에서. 문법아님(함수처럼쓰면댐) */
+
+			//controller로 보낸다
+			url : "review.action", /* 컨트롤러의 */
+			data : data1,  // 위에데이터랑같다.
+			method : "POST",
+			success : function(data, status, xhr) {
+	
+				alert(data);
+				/* 여기서 data는 리턴된값(controller에서.  위에랑다름) */
+				/*  status랑 xhr은 반드시 써줘야함. 그냥 규칙 */
+				
+				//목록 갱신
+				/* alert(data)
+				$("#commentlist").load("getcomment.action");/* 큰 껍데기 */
+						/* 댓글에있던 html요소들을 다시 또 코멘트리스트에 넣음 */
+				/* 코맨트리스 에 삽입 */
+			
+				/* 코멘트 리스트에 있는애들을 (div)애들을 채워주겠다 =  즉 자동새로고침 */
+				/* visitors에있는 애들을   getcomment로 넘어감 */
+					
+			},
+			error: function(xhr, status, err) {
+				alert('리뷰 쓰기 실패');
+			}
+
+		});
+    });
+
+   	$(function() {
+   		var divs = $('.starRev')    		
+   		divs.each(function(index, div) {
+   			$(div).children('span').removeClass('on');
+    		rating = $(div).attr("data-rating");
+    		rating = parseInt(rating * 10);
+    		rating = Math.round(rating / 5);
+    		var spans = $(div).children('span:lt(' + rating + ')');
+    		spans.addClass('on');
+   		});
+   		
+   		$("#go-chatting").on('click', function(event) {
+   			var heroNo = $(this).attr('data-herono');
+   			var userNo = $(this).attr('data-userno');
+   			
+   			location.href = "/findhero/chat/insert.action?userNo=" + userNo + "&heroNo=" + heroNo;
+   		});
+   	});
+         
+    </script>
 
 </body>
 </html>

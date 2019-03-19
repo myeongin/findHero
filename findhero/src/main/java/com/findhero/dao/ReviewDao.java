@@ -1,5 +1,6 @@
 package com.findhero.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.findhero.vo.HeroVo;
@@ -32,6 +33,8 @@ public interface ReviewDao {
 	
 	void registerReview(ReviewVo review);
 	void insertReview(ReviewVo review);
+	
+	int selectUserCountByUserNoAndHeroNo(int userNo, int heroNo);
 	
 	
 	

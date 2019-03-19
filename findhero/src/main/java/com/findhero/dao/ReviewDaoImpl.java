@@ -38,7 +38,9 @@ public class ReviewDaoImpl implements ReviewDao{
 		HashMap<String, Object> review = new HashMap<>();
 		review.put("heroNo", heroNo);
 		List<ReviewVo> reviewlist = reviewMapper.reviewList(review);
-				
+		
+		
+		
 		return reviewlist;
 	}
 
@@ -180,6 +182,16 @@ public class ReviewDaoImpl implements ReviewDao{
 	public List<UserVo> reviewUserList(int heroNo) {
 		List<UserVo> users = reviewMapper.selectUserList(heroNo);
 		return users;
+	}
+
+
+	@Override
+	public int selectUserCountByUserNoAndHeroNo(int userNo, int heroNo) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("userNo", userNo);
+		params.put("heroNo", heroNo);
+		return reviewMapper.selectUserCountByUserNoAndHeroNo(params);
 	}
 
 

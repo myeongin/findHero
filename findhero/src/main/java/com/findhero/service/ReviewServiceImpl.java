@@ -1,5 +1,6 @@
 package com.findhero.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,8 @@ public class ReviewServiceImpl implements ReviewService{
 
 	@Override
 	public List<ReviewVo> reviewListService(int heroNo) {
-		List<ReviewVo> reviewlist = reviewDao.reviewListDao(heroNo);
+		List<ReviewVo> reviewlist = reviewDao.reviewListDao(heroNo);		
+		
 		return reviewlist;
 	}
 
@@ -161,6 +163,13 @@ public class ReviewServiceImpl implements ReviewService{
 	public List<UserVo> reviewUserList(int heroNo) {
 		List<UserVo> users = reviewDao.reviewUserList(heroNo);
 		return users;
+	}
+
+
+	@Override
+	public int getUserCountByUserNoAndHeroNo(int userNo, int heroNo) {
+		// TODO Auto-generated method stub
+		return reviewDao.selectUserCountByUserNoAndHeroNo(userNo, heroNo);
 	}
 
 	

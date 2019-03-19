@@ -37,6 +37,18 @@
  	select * from User U left join Review R ON U.UserNo = R.UserNo where R.HeroNo=#{heroNo}
  </select>
  
+<select id="selectUserCountByUserNoAndHeroNo" parameterType="hashmap" resultType="int">
+	SELECT count(*)
+	FROM User u 
+	INNER JOIN Apply a 
+	ON u.UserNo = a.UserNo 
+	INNER JOIN Rs r 
+	ON r.RsNo = a.RsNo
+	INNER JOIN Hero h
+	ON h.HeroNo = r.HeroNo
+	WHERE h.HeroNo =#{heroNo} AND u.UserNo = #{userNo}
+</select>
+ 
  
  
  
