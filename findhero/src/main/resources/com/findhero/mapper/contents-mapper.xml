@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.findhero.mapper.ContentsMapper">
+
+	<insert id="registerLesson" parameterType="rs"
+		useGeneratedKeys="true" keyProperty="RsNo">
+		INSERT INTO
+		Rs(RsNo,RsTitle,RsContent,RsField1,RsField2,RsCount,RsDay,RsTerm,RsAdd1,RsAdd2,RsAdd3,RsPrice,RsStart,RsEnd,HeroNo)
+
+		VALUES (#{RsNo}, #{RsTitle}, #{RsContent}, #{RsField1}, #{RsField2},
+		#{RsCount}, #{RsDay}, #{RsTerm}, #{RsAdd1}, #{RsAdd2}, #{RsAdd3},
+		#{RsPrice}, #{RsStart}, #{RsEnd}, #{HeroNo})
+	</insert>
+
+
+	<insert id="insertRsAttach" parameterType="attach">
+		INSERT INTO
+		attach
+		(AttachNo, RsNo, userFileName, savedFileName)
+		VALUES
+		(#{attachNo},
+		#{RsNo}, #{userFileName}, #{savedFileName})
+	</insert>
+
+
+	<select id="viewList" parameterType="HashMap" resultType="rs">
+
+		<!-- SELECT * FROM ( SELECT @rownum:=@rownum+1 idx, s.* FROM ( SELECT * 
+			FROM Rs where heroNo = #{heroNo} and rsField1 = #{field} ORDER BY RsNo DESC 
+			) s where (@rownum:=0)=0 ) a WHERE idx >= #{ from } AND idx <![CDATA[<]]> 
+			#{ to } -->
+
+		SELECT
+		*
+		FROM
+		Rs
+		where
+		heroNo = #{heroNo}
+		and rsField1 = #{field}
+		ORDER BY
+		RsNo DESC
+		limit #{ from },#{ to }
+
+	</select>
+
+	<select id="viewListbyUser" parameterType="HashMap"
+		resultType="rs">
+		<!-- SELECT * FROM ( SELECT @rownum:=@rownum+1 idx, s.* FROM ( SELECT * 
+			FROM Rs where rsField1 = #{field} ORDER BY RsNo DESC ) s where (@rownum:=0)=0 
+			) a WHERE idx >= #{ from } AND idx <![CDATA[<]]> #{ to } -->
+
+		SELECT
+		*
+		FROM
+		Rs
+		where rsField1 = #{field}
+		and rsDel = #{rsdel}
+		ORDER
+		BY RsNo DESC
+		limit #{ from
+		}, #{ to }
+
+
+	</select>
+
+	<resultMap type="rs" id="rsattachMap">
+		<id column="rsno" property="rsNo" />
+		<result column="rsTitle" property="rsTitle" />
+		<result column="rsContent" property="rsContent" />
+		<result column="rsField1" property="rsField1" />
+		<result column="rsField2" property="rsField2" />
+		<result column="rsCount" property="rsCount" />
+		<result column="rsDay" property="rsDay" />
+		<result column="rsTerm" property="rsTerm" />
+		<result column="rsPrice" property="rsPrice" />
+		<result column="rsRegDate" property="rsRegDate" />
+		<result column="rsStart" property="rsStart" />
+		<result column="rsEnd" property="rsEnd" />
+		<result column="HeroNo" property="HeroNo" />
+
+		<collection property="attachments" column="rsNo"
+			select="selectRsAttachByRsNo" />
+	</resultMap>
+
+	<resultMap type="attach" id="attachMap">
+		<id column="attachNo" property="attachNo" />
+		<result column="rsNo" property="rsNo" />
+		<result column="userfilename" property="userFileName" />
+		<result column="savedfilename" property="savedFileName" />
+	</resultMap>
+
+	<select id="selectContentsCount" parameterType="String" resultType="int">
+		select count(*) from 
+		Rs
+		where rsField1=#{field}
+	</select>
+
+	<!-- <select id="lessonDetail" parameterType="int" resultType="rs"> select 
+		* from Rs where RsNo = #{RsNo} </select> -->
+
+	<select id="lessonDetail" parameterType="int"
+		resultMap="rsattachMap">
+		SELECT
+		r.*
+		FROM Rs r
+		WHERE r.rsno = #{rsNo }
+	</select>
+
+	<select id="selectRsAttachByRsNo" parameterType="int"
+		resultType="attach">
+		SELECT
+		a.attachno, a.userfilename, a.savedfilename
+		FROM attach a
+		WHERE a.rsno
+		=
+		#{ rsNo }
+	</select>
+
+	<resultMap type="hero" id="heroMap">
+		<id column="heroNo" property="heroNo" />
+		<result column="heroemail" property="heroEmail" />
+		<result column="heroname" property="heroName" />
+		<result column="herophone" property="heroPhone" />
+		<result column="heroimage" property="heroImage" />
+		<result column="herofield" property="heroField" />
+	</resultMap>
+	<resultMap type="rs" id="rsMap">
+		<id column="rsNo" property="rsNo" />
+		<result column="heroNo" property="heroNo" />
+		<association property="hero" column="heroNo"
+			resultMap="heroMap" />
+	</resultMap>
+
+	<select id="heroinfo" parameterType="int" resultMap="heroMap">
+		select
+		h.heroname, h.heroemail, h.herophone, h.heroimage, h.herofield,
+		h.herofield2, h.heroNo, h.heroabout
+		from Hero h inner join Rs rs
+		on
+		h.herono = rs.herono
+		where
+		rs.rsno = #{rsNo}
+	</select>
+
+	<update id="updateContents" parameterType="rs">
+		update Rs set
+		rstitle =
+		#{rsTitle}, rsfield1=#{rsField1}, rsfield2=#{rsField2},
+		rscount=#{rsCount}, rsterm=#{rsTerm}, rsday=#{rsDay},
+		rsadd1=#{rsAdd1},
+		rsadd2=#{rsAdd2}, rsadd3=#{rsAdd3},
+		rsprice=#{rsPrice}, rsstart=#{rsStart},
+		rsend=#{rsEnd},
+		rscontent=#{rsContent}
+		where rsNo=#{rsNo}
+	</update>
+
+
+	<delete id="deleteContent" parameterType="int">
+		delete from Rs where
+		rsno = #{rsNo}
+	</delete>
+
+	<insert id="apply" parameterType="apply">
+		insert into Apply(ApplyNo,
+		UserNo, RsNo)
+		values(#{applyNo}, #{userNo}, #{rsNo})
+	</insert>
+
+	<!-- user : apply 1:1, apply : rs 1:n -->
+	<!-- <resultMap type="user" id="userMap"> <id column="userNo" property="userNo" 
+		/> <result column="useremail" property="userEmail" /> <result column="username" 
+		property="userName" /> <result column="userphone" property="userPhone" /> 
+		<result column="userimage" property="userImage" /> </resultMap> <resultMap 
+		type="apply" id="applyMap"> <id column="applyNo" property="applyNo" /> <result 
+		column="userNo" property="userNo" /> <result column="rsNo" property="rsNo" 
+		/> <association property="user" column="userNo" resultMap="userMap" /> </resultMap> 
+		<resultMap type="rs" id="rsMap2"> <id column="rsNo" property="rsNo" /> <collection 
+		property="apply" column="rsNo" resultMap="applyMap" /> </resultMap> -->
+
+	<select id="userApplytoExpert" parameterType="int"
+		resultType="user">
+		select u.*
+		from User u inner join Apply a
+		on u.UserNo =
+		a.UserNo
+		inner join Rs r
+		on r.RsNo = a.RsNo
+		where r.RsNo = #{ rsNo }
+	</select>
+
+	<select id="selectUserNo" resultType="int">
+		select userNo from User
+	</select>
+
+
+	<insert id="registerReview" parameterType="review">
+		INSERT INTO Review
+		( ReviewContent, Pro, Satisfied, Reliability, UserNo, HeroNo)
+		values
+		( #{ reviewContent }, #{pro}, ${ satisfied }, ${ reliability }, ${
+		userNo }, ${ heroNo} )
+
+	</insert>
+
+	<select id="reviewload" parameterType="int" resultType="review">
+<!-- 		select re.* from Review re inner join Rs r where RsNo = #{rsNo} -->
+	select * from Review where heroNo = #{heroNo}
+	</select>
+
+	<select id="heroinfo2" parameterType="int" resultType="hero">
+		select * from Hero where heroNo = #{heroNo}
+	</select>
+
+	<select id="selectreviewCount" parameterType="int"
+		resultType="int">
+		select count(*) from Review where heroNo = #{heroNo}
+	</select>
+	
+	<update id="updateAbout" parameterType="hero">
+		update Hero set heroAbout=#{heroAbout} where heroNo=#{heroNo}
+	</update>
+	
+	<select id="selectRsDel" resultType="String">
+		 select RsDel from Rs
+	</select>
+	
+	<select id="selectHeroAvg" parameterType="int" resultType="FLOAT">
+		select round(sum(pro+satisfied+reliability) / (count(*) * 3), 1) from Review where heroNo = #{heroNo}
+	</select>
+	
+	<select id="selectpro" parameterType="int" resultType="FLOAT">
+		select round(sum(pro)/count(pro), 1) from Review where heroNo = #{heroNo}
+	</select>
+	
+	<select id="usercount" parameterType="int" resultType="int">
+		select count(*)
+		from User u inner join Apply a
+		on u.UserNo =
+		a.UserNo
+		inner join Rs r
+		on r.RsNo = a.RsNo
+		where r.RsNo = #{ rsNo }
+	</select>
+	
+	<select id="selectsatisfied" parameterType="int" resultType="FLOAT">
+		select round(sum(satisfied)/count(satisfied), 1) from Review where heroNo = #{heroNo}
+	</select>
+	
+	<select id="selectreliability" parameterType="int" resultType="FLOAT">
+		select round(sum(reliability)/count(reliability), 1) from Review where heroNo = #{heroNo}
+	</select>
+</mapper>

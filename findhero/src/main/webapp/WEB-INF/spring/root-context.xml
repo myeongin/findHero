@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+					    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+					    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+					   ">
+	
+	<bean
+		id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8" />
+		<property name="maxInMemorySize" value="2097152" />
+		<property name="uploadTempDir" value="/resources/productImg-temp" />
+	</bean>
+	
+	<!-- ////////////////////////////////////////////////////////////////////////////////  -->
+	
+	<import resource="account-context.xml"/>	
+	<import resource="blog-context.xml"/>
+	<import resource="review-context.xml"/>	
+	<import resource="contents-context.xml"/>
+	<import resource="chat-context.xml"/>
+	<import resource="hero-context.xml"/>
+	<import resource="request-context.xml"/>
+
+	
+	
+</beans>

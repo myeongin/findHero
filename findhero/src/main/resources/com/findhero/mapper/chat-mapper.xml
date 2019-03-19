@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.findhero.mapper.ChatMapper">
+
+	<select id="selectAllContent" parameterType="hashmap" resultType="chatcontent">
+		SELECT ChatContentNo, time , Content , user FROM ChatContent WHERE ChatNo = #{ chatno }
+	</select>
+
+	<select id="selectAllChat" parameterType="hashmap" resultType="chat">
+		select distinct a.ChatNo, a.ChatDel,a.UserNo,a.HeroNo from (select C.ChatNo,C.ChatDel,C.UserNo,C.HeroNo, A.time from Chat C left outer join ChatContent A On C.ChatNo = A.ChatNo where C.userNo= #{ userno } order by A.time desc)a limit 0,20
+	</select>
+	
+	<select id="selectAllHeroChat" parameterType="hashmap" resultType="chat">
+		select distinct a.ChatNo, a.ChatDel,a.UserNo,a.HeroNo from (select C.ChatNo,C.ChatDel,C.UserNo,C.HeroNo, A.time from Chat C left outer join ChatContent A On C.ChatNo = A.ChatNo where C.heroNo= #{ herono } order by A.time desc)a limit 0,20;
+	</select>
+		
+	<select id="selectAllHero" parameterType="hashmap" resultType="hero">
+		SELECT * FROM Chat C INNER JOIN Hero H On C.HeroNo = H.HeroNo WHERE UserNo = #{ userno }
+	</select>
+	
+	<select id="selectAllUserContent" parameterType="hashmap" resultType="chatcontent">
+		SELECT * FROM ChatContent C LEFT JOIN Chat A ON C.ChatNo = A.ChatNo WHERE UserNo = #{ userno }
+	</select>
+	
+	<select id="selectAllUserChat" parameterType="hashmap" resultType="user">
+		SELECT * FROM Chat C INNER JOIN User U On C.UserNo = U.UserNo WHERE HeroNo = #{ herosno}
+	</select>
+	
+	<select id="selectAllHeroContent" parameterType="hashmap" resultType="chatcontent">
+		SELECT * FROM ChatContent C LEFT JOIN Chat A ON C.ChatNo = A.ChatNo WHERE HeroNo = #{ herono }
+	</select>
+	
+	<select id="selectChatUserDetailContent" parameterType="hashmap" resultType="chatcontent">
+		SELECT * FROM ChatContent WHERE ChatNo = #{ chatno }
+ 	</select>
+	
+	<select id="selectChatDetailHero" parameterType="hashmap" resultType="hero">
+		SELECT * FROM Chat C INNER JOIN Hero H On C.HeroNo = H.HeroNo WHERE UserNo = #{ userno } AND ChatNo = #{ chatno }
+	</select>
+	
+	<select id="selectChatDetailUser" parameterType="hashmap" resultType="user">
+		SELECT * FROM Chat C INNER JOIN User U On C.UserNo = U.UserNo WHERE HeroNo = #{ herono } AND ChatNo = #{ chatno }
+	</select>
+	
+	<select id="selectListChatHero" parameterType="hashmap" resultType="hero">
+		SELECT * From Hero WHERE heroNo = #{ herono }
+	</select>
+	
+	<select id="selectListChatContent" parameterType="hashmap" resultType="chatcontent">
+		SELECT ChatContentNo, time, Content, user FROM ChatContent WHERE ChatNo= #{ chatno } ORDER BY Time DESC LIMIT 0,1
+	</select>
+	
+	<select id="selectListChatUser" parameterType="hashmap" resultType="user">
+		SELECT * FROM User WHere userNo = #{ userno }
+	</select>
+	
+	<insert id="insertContentUserWrite" parameterType="chatcontent">
+		INSERT INTO ChatContent ( Content, user, ChatNo )VALUE ( #{ content }, #{ user }, #{ chatNo })
+	</insert>
+	
+	<select id="selectChatNo" parameterType="hashmap" resultType="int">
+		SELECT ChatNo FROM Chat WHERE userNo=#{ userno } and heroNo=#{ herono }
+	</select>
+	
+	<insert id="insertChat" parameterType="hashmap">
+		INSERT INTO Chat ( UserNo, HeroNo ) VALUE ( #{ userno }, #{ herono })
+	</insert>
+	
+	<update id="updateChatDel" parameterType="chat">
+		UPDATE Chat SET ChatDel = 0 WHERE ChatNo = #{ chatNo }
+	</update>
+	
+	<select id="selectChatDetailHeroNo" parameterType="int" resultType="int">
+		SELECT HeroNo FROM Chat WHERE ChatNo = #{ chatNo }
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

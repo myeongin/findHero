@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	
+	<!-- 메퍼써주기위한 기본경로?  -->
+<mapper namespace="com.findhero.mapper.ReviewMapper">
+
+ <!-- 리뷰 목록의 히어로 정보부르기  -->
+ <select id="selectHero" parameterType="int" resultType="hero">
+ select * from Hero where heroNo = #{heroNo}
+ 
+ </select>
+	
+	<!-- 리뷰 작성 -->
+  <insert id="registerReview" parameterType="review">
+	INSERT INTO Review
+	( ReviewContent, Pro, Satisfied, Reliability, UserNo, HeroNo)
+	values
+	( #{reviewContent}, #{pro},  #{ satisfied }, #{ reliability }, #{ userNo }, #{ heroNo} )
+	
+ </insert>
+ 
+ 
+ 
+ <!-- 리뷰목록 -->
+ <select id="reviewList" parameterType="hashmap" resultType="review">
+	select R.*, U.UserName 
+	from Review R
+	LEFT OUTER JOIN User U 
+	ON R.UserNo = U.UserNo
+	where HeroNo = #{heroNo}
+</select>
+ 
+ <select id="selectUserList" parameterType="int" resultType="user">
+ 	select * from User U left join Review R ON U.UserNo = R.UserNo where R.HeroNo=#{heroNo}
+ </select>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ <!-- 이건테스트용 -->
+ <select id="selectRs" parameterType="int" resultType="rs">
+ select * from Rs where rsNo = #{rsNo}
+ 
+ </select>
+	
+	
+	<select id="selectUser" parameterType="int" resultType="hero">
+	select * from User where userNo = #{userNo}
+	</select>
+	
+	
+	
+
+</mapper>

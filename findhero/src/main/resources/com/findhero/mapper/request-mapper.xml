@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.findhero.mapper.RequestMapper">
+
+<insert id="requestRegister" parameterType="request" useGeneratedKeys="true" keyProperty="requestNo">
+	INSERT INTO Request(requestNo, requestContent, requestField1, requestField2, requestAdd1, requestAdd2, requestAdd3, requestTerm, requestDay, userNo)	
+	VALUES (#{requestNo}, #{requestContent}, #{requestField1}, #{requestField2}, #{requestAdd1}, #{requestAdd2}, #{requestAdd3}, #{requestTerm}, #{requestDay}, #{userNo})
+</insert>
+
+<select id="selectHerosByRequest" parameterType="request" resultType="hero">	
+	SELECT * FROM Hero WHERE heroField = #{requestField1} AND heroField2 =#{requestField2} AND heroAdd3 = #{requestAdd3}	
+</select>
+
+<insert id="insertConfirm" parameterType="hashmap">
+	INSERT INTO Confirm(requestNo,heroNo)
+	VALUES (#{requestNo},#{heroNo})
+</insert>
+
+<select id="selectReviews" parameterType="hashmap" resultType="review">
+	SELECT r.ReviewContent, r.Pro, r.Satisfied, r.Reliability, u.userName FROM Review r Join User u ON r.userNo = u.userNo
+</select>
+
+<select id="selectUser" parameterType="hashmap" resultType="review">
+	SELECT u.userName, u.userNo, r.userNo FROM User u Join Review r ON r.userNo = u.userNo
+</select>
+<select id="selectHero" parameterType="hashmap" resultType="review">
+	SELECT u.userName, u.userNo, r.userNo FROM User u Join Review r ON r.userNo = u.userNo
+</select>
+
+<select id="countReviews" resultType="int">
+	SELECT count(*) FROM Review
+</select>
+
+</mapper>

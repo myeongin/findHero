@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE configuration
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+	 <settings>
+        <setting name="cacheEnabled" value="false" />
+        <setting name="jdbcTypeForNull" value="NULL" />
+    </settings>
+
+
+	<typeAliases>
+		<typeAlias type="com.findhero.vo.UserVo" alias="user"/>
+		<typeAlias type="com.findhero.vo.HeroVo" alias="hero"/>
+		<typeAlias type="com.findhero.vo.BlogVo" alias="blog"/>
+		<typeAlias type="com.findhero.vo.BlogImgVo" alias="blogImg"/>
+		<typeAlias type="com.findhero.vo.ChatVo" alias="chat"/>
+		<typeAlias type="com.findhero.vo.ChatContentVo" alias="chatcontent"/>
+		<typeAlias type="com.findhero.vo.RsVo" alias="rs"/>
+		<typeAlias type="com.findhero.vo.ApplyVo" alias="apply"/>
+		<typeAlias type="com.findhero.vo.RequestVo" alias="request"/>
+		<typeAlias type="com.findhero.vo.ConfirmVo" alias="confirm"/>
+		<typeAlias type="com.findhero.vo.AttachVo" alias="attach"/>
+		<typeAlias type="com.findhero.vo.ReviewVo" alias="review"/>
+	</typeAliases>
+
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="com.mysql.jdbc.Driver" />
+				<property name="url" value="jdbc:mysql://211.197.18.246:3306/findhero" />
+				<property name="username" value="abcde" />
+				<property name="password" value="9922" />
+			</dataSource>
+		</environment>
+		<environment id="production">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="com.mysql.jdbc.Driver" />
+				<property name="url" value="jdbc:mysql://211.197.18.246:3306/findhero" />
+				<property name="username" value="abcde" />
+				<property name="password" value="9922" />
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<mappers>
+		<mapper resource="com/findhero/mapper/account-mapper.xml" />
+		<mapper resource="com/findhero/mapper/Blog-mapper.xml" />
+		<mapper resource="com/findhero/mapper/chat-mapper.xml" />
+		<mapper resource="com/findhero/mapper/contents-mapper.xml" /> 
+		<mapper resource="com/findhero/mapper/hero-mapper.xml"/>
+		<mapper resource="com/findhero/mapper/request-mapper.xml"/>
+		<mapper resource="com/findhero/mapper/review-mapper.xml"/>
+	</mappers>
+	
+	
+</configuration>

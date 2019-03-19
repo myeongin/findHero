@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.findhero.mapper.AccountMapper">
+
+	<insert id="insertUser" parameterType="user">
+		INSERT INTO User(USERNAME,USEREMAIL,USERPSWD,USERPHONE)
+		VALUES (#{userName},#{userEmail},#{userPswd},#{userPhone})
+	</insert>
+	
+	<insert id="insertHero" parameterType="hero">
+		INSERT INTO Hero(HeroName,HeroEmail,HeroPswd,HeroAdd1,HeroAdd2,HeroAdd3,HeroPhone,HeroField,HeroField2)
+		VALUES (#{heroName},#{heroEmail},#{heroPswd},#{heroAdd1},#{heroAdd2},#{heroAdd3},#{heroPhone},#{heroField},#{heroField2})
+	</insert>
+		
+	<select id="selectUserByEmailAndPswd" parameterType="user" resultType="user">
+		SELECT * FROM User 
+		WHERE userEmail = #{userEmail} and userPswd=#{userPswd} and userDel !=1 
+	</select>
+	
+	<select id="selectHeroByEmailAndPswd" parameterType="user" resultType="hero">
+		SELECT * FROM Hero
+		WHERE heroEmail = #{userEmail} and heroPswd=#{userPswd} and heroDel !=1
+	</select>	
+	
+	<update id="updateUser" parameterType="user">
+		UPDATE User
+		SET userName = #{userName},userEmail = #{userEmail},
+			userPhone = #{userPhone}
+		WHERE userNo = #{userNo} and userDel !=1
+	</update>
+	
+	<update id="updateHero" parameterType="hero">
+		UPDATE Hero
+		SET heroName = #{heroName},heroEmail = #{heroEmail},heroPhone = #{heroPhone},heroField=#{heroField},heroField2=#{heroField2},
+			heroAdd1=#{heroAdd1},heroAdd2=#{heroAdd2},heroAdd3=#{heroAdd3},heroAbout=#{heroAbout}	
+		WHERE heroNo = #{heroNo} and heroDel !=1
+	</update>
+	
+	<update id="insertUserImage" parameterType="user">
+		UPDATE User
+		SET userImage = #{userImage}
+		WHERE userNo = #{userNo}
+	</update>
+	
+	<update id="insertHeroImage" parameterType="hero">
+		UPDATE Hero
+		SET heroImage = #{heroImage}
+		WHERE heroNo = #{heroNo}
+	</update>
+	
+	<select id="selectAllRssByHeroNo" parameterType="hashmap" resultType="rs">
+		SELECT * FROM Rs
+		WHERE heroNo = #{heroNo}
+		ORDER BY rsNo desc
+		limit #{from},#{pagesize}
+	</select>
+	
+	<select id="selectcountRss" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM Rs WHERE heroNo = #{heroNo}
+	</select>
+	
+	<select id="selectAllApplysByUserNo" parameterType="hashmap" resultType="hashmap">
+		SELECT r.*,a.*,h.*
+		FROM Rs r
+		JOIN Apply a
+		ON a.rsNo =r.rsNo
+		JOIN Hero h
+		ON h.heroNo = r.heroNo
+		WHERE a.userNo = #{userNo}
+		ORDER BY a.applyNo desc
+		limit #{from},#{pagesize}
+	</select>
+	
+	<select id="selectRssByRsNo" parameterType="int" resultType="rs">
+		SELECT * FROM Rs WHERE rsNo = #{rsNo}
+	</select>
+	
+	<select id="selectCountApply" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM Apply WHERE userNo=#{userNo}
+	</select>
+	
+	<select id="selectAllRequestByUserNo" parameterType="hashmap" resultType="request">
+		SELECT * FROM Request
+		WHERE userNo=#{userNo}
+		ORDER BY requestNo desc
+		limit #{from},#{pagesize}
+	</select>
+	
+	<select id="selectCountRequest" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM Request WHERE userNo = #{userNo}
+	</select>
+	
+	<select id="selectAllConfirmByHeroNo" parameterType="hashmap" resultType="hashmap">
+		SELECT c.*,r.*,u.*
+			FROM Confirm c
+				join Request r
+					on c.RequestNo = r.RequestNo
+				join User u
+					on r.userNo = u.userNo
+			where c.heroNo = #{heroNo}
+			order by c.ConfirmNo desc
+			limit #{from},#{pagesize}
+	</select>
+	
+	<select id="selectRequestByRequestNo" parameterType="int" resultType="request">
+		SELECT * FROM Request WHERE requestNo = #{requestNo}	
+	</select>
+	
+	<select id="selectCountConfirm" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM Confirm WHERE heroNo = #{heroNo}
+	</select>
+	
+	<update id="updateRsDel" parameterType="hashmap">
+		UPDATE Rs
+		SET rsDel = #{type},rsStart = current_timestamp
+		WHERE rsNo = #{rsNo}
+	</update>
+	
+	<update id="updateRsDel2" parameterType="hashmap">
+		UPDATE Rs
+		SET rsDel = #{type},rsEnd = current_timestamp
+		WHERE rsNo = #{rsNo}
+	</update>
+	
+	<select id="selectUsersByRsNo" parameterType="int" resultType="user">
+		SELECT u.*
+			FROM User u
+				JOIN Apply a
+					ON a.userNo = u.userNo
+				JOIN Rs r
+					ON r.rsNo = a.rsNo
+			WHERE r.rsNo = #{rsNo}
+			ORDER BY a.applyDay desc;
+	</select>
+	
+	<update id="updateConfirm" parameterType="hashmap">
+		UPDATE Confirm
+		SET consent = #{confirm}
+		WHERE confirmNo = #{confirmNo}
+	</update>
+	
+	<select id="selectHerosByRequests" parameterType="hashmap" resultType="hero">
+		SELECT h.*
+			FROM Hero h
+				Join Confirm c
+					ON c.heroNo = h.heroNo
+				Join Request r
+					ON r.requestNo =c.requestNo
+			WHERE r.requestNo = #{requestNo} and c.consent = #{consent}						
+	</select>
+	
+	<select id="selectApplyCountByRsNo" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM Apply WHERE rsNo = #{rsNo}
+	</select>
+	
+	<select id="selectprcie" parameterType="int" resultType="hashmap">
+		select Month(a.applyDay) reg,sum(r.rsPrice) price from User u
+			join Apply a
+			on a.userNo = u.userNo
+			Join Rs r
+			on r.rsNo = a.rsNo
+			where u.userNo = #{userNo}
+			group by reg;		
+	</select>
+	
+	 <select id="selectPricesByMonth2" parameterType="int" resultType="hashmap">
+		select Month(r.rsRegDate) reg,sum(r.rsPrice) price from Rs r Join Apply a
+		on r.rsNo = a.rsNo
+		where r.heroNo= #{heroNo}
+		group by reg;	
+	</select>
+	
+	<select id="selectConfirmCount" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM Confirm WHERE requestNo=#{requestNo}
+	</select>
+	
+	<select id="selectConfirmYCount" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM Confirm WHERE requestNo=#{requestNo} and Confirm =1
+	</select>
+	
+	<select id="selectNewRequests" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM Confirm WHERE heroNo=#{heroNo} and Confirm = 0
+	</select>
+	
+	<update id="updateCon" parameterType="int">
+		UPDATE Confirm
+		SET Confirm = 1
+		WHERE heroNo = #{heroNo} and Confirm = 0
+	</update>
+	
+	<select id="selectFieldCount" parameterType="int" resultType="hashmap">
+		select r.RsField1,Count(*) count,sum(r.rsPrice) price from Apply a 
+		Join Rs r 
+		on r.rsNo = a.rsNo
+		where a.userNo = #{userNo}
+		group by r.RsField1
+	</select>
+	
+	<select id="selectField2Count" parameterType="int" resultType="hashmap">
+		select r.RsField2,Count(*) count,sum(r.rsPrice) price from Apply a 
+		Join Rs r 
+		on r.rsNo = a.rsNo
+		where a.userNo = #{userNo}
+		group by r.RsField1
+	</select>
+	
+	
+	<insert id="insertRequestRs" parameterType="rs"
+		useGeneratedKeys="true" keyProperty="RsNo">
+		INSERT INTO
+		Rs(RsNo,RsTitle,RsContent,RsField1,RsField2,RsCount,RsDay,RsTerm,RsAdd1,RsAdd2,RsAdd3,RsPrice,RsType,RsDel,HeroNo)
+
+		VALUES (#{RsNo}, #{RsTitle}, #{RsContent}, #{RsField1}, #{RsField2},
+		#{RsCount}, #{RsDay}, #{RsTerm}, #{RsAdd1}, #{RsAdd2}, #{RsAdd3},
+		#{RsPrice},#{rsType},#{rsDel}, #{HeroNo})
+	</insert>
+
+
+	<insert id="insertRsAttach" parameterType="attach">
+		INSERT INTO
+		attach
+		(AttachNo, RsNo, userFileName, savedFileName)
+		VALUES
+		(#{attachNo},
+		#{RsNo}, #{userFileName}, #{savedFileName})
+	</insert>
+	
+	<insert id="insertOk" parameterType="hashmap">
+		INSERT INTO Ok(requestNo,rsNo)
+		Values (#{requestNo},#{rsNo})
+	</insert>
+	
+	<select id="selectCheckOks" parameterType="int" resultType="hashmap">
+		select r.*,h.*,o.okNo,s.rsNo
+		from User u
+		join Request r
+		on r.userNo = u.userNo
+		join Ok o
+		on o.requestNo = r.requestNo
+		join Rs s
+		on o.rsNo =s.rsNo
+		join Hero h
+		on s.heroNo = h.heroNo  
+		where u.userNo = #{userNO} and o.ok = '대기'
+	</select>
+	
+	<update id="updateOkY" parameterType="int">
+		UPDATE Ok
+		SET ok = '승인'
+		WHERE okNo = #{okNo}
+	</update>
+	
+	<update id="updateOkN" parameterType="int">
+		UPDATE Ok
+		SET ok = '거절'
+		WHERE okNo = #{okNo}
+	</update>
+	
+	<update id="updateRsDelYByOk" parameterType="int">
+		UPDATE Rs
+		SET RsDel = '승인'
+		WHERE rsNo = #{rsNo}
+	</update>
+	
+	<update id="updateRsDelNByOk" parameterType="int">
+		UPDATE Rs
+		SET RsDel = '거절'
+		WHERE rsNo = #{rsNo}
+	</update>
+	
+	<update id="updateRsDel3" parameterType="hashmap">
+		UPDATE Rs
+		SET rsDel = #{type}
+		WHERE rsNo = #{rsNo}
+	</update>
+	
+	<insert id="insertApply" parameterType="hashmap">
+		INSERT INTO Apply(userNo,rsNo)
+		values(#{userNo},#{rsNo})
+	</insert>
+</mapper>

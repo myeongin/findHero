@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.findhero.mapper.BlogMapper">
+	
+	<select id="selectBlog" parameterType="hashmap" resultType="blog">
+		select * from Blog WHERE blogdel != 1 LIMIT 9
+	</select>
+	
+	<select id="takeBestList" parameterType="hashmap" resultType="blog">
+		select * from Blog WHERE blogdel != 1 LIMIT 5
+	</select>
+	
+	
+	<select id="blogList" parameterType="hashmap" resultType="blog">
+		select * from Blog WHERE blogdel != 1 and herono=#{heroNo}  LIMIT 5
+	</select>
+	
+	<select id="takeDetail" parameterType="hashmap" resultType="blog">
+		SELECT * FROM Blog WHERE BLOGNO=#{blogNo}
+	</select>
+	
+	<select id="takeLesson" parameterType="hashmap" resultType="rs">
+		SELECT * FROM Rs WHERE heroNo=#{heroNo}
+	</select>
+	
+	<select id="takeImg" parameterType="hashmap" resultType="blogImg">
+		SELECT * FROM BlogImg WHERE BLOGNO=#{blogNo}
+	</select>
+	
+	<select id="takeLessonImg" parameterType="hashmap" resultType="attach">
+		SELECT * FROM attach WHERE rsno=#{rsNo}
+	</select>
+	
+<!-- 	<select id="takeImgs" parameterType="hashmap" resultType="blogImg">
+		select * from BlogImg GROUP BY blogno having blogno=#{blogno}
+	</select>
+	 -->
+	<select id="selectBoardCount" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM Blog WHERE blogdel != 1
+	</select>
+	
+	
+	
+	<select id="rsCount" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM Rs WHERE HeroNo=#{heroNo} 
+	</select>
+	
+	<insert id="insertBlog" parameterType="blog" useGeneratedKeys="true" keyColumn="blogNo" keyProperty="blogNo">
+		INSERT INTO Blog (BLOGNAME,BLOGANSWER1,BLOGANSWER2,BLOGANSWER3,BLOGANSWER4,BLOGANSWER5,HERONO)
+		VALUES (#{blogName},#{blogAnswer1},#{blogAnswer2},#{blogAnswer3},#{blogAnswer4},#{blogAnswer5},#{heroNo})
+	</insert>
+	
+	<insert id="insertBlogImg" parameterType="blog">
+		INSERT INTO BlogImg (ImgName,ImgSavedName,BlogNo)
+		VALUES (#{imgName},#{imgSavedName},#{blogNo})
+	</insert>
+		<select id="takeHero" parameterType="hashmap" resultType="hero">
+		SELECT * FROM Hero WHERE HERONO=#{heroNo}
+	</select>
+	
+	<update id="deleteBlog" parameterType="hashmap">
+		UPDATE Blog SET blogdel = #{blogDel} WHERE blogno =#{blogNo}
+	</update>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
