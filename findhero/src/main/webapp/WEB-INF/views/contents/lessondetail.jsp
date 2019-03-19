@@ -173,7 +173,8 @@ $('#submit').on('click', function(event) {
 				<div id="gocenter">
 					<div class="row">
 						<div class="col-md-6 col-lg-4">
-							<img src="/findhero/resources/hero-img/${ heros.heroImage }"
+							<img src="/findhero/resources/hero-img/${ heros.heroImage }" 
+								style="width: 100%; height: 300px; " 
 								alt="" class="img-fluid"
 								onerror="this.src = '/findhero/resources/rsimg/noimg.png'">
 						</div>
@@ -607,7 +608,8 @@ $('#submit').on('click', function(event) {
 									<div class="col-sm-12 col-md-6">
 										<div class="testimonial-img">
 											<img
-												src="/findhero/resources/user-img/${ applylist.userImage }"
+												src="/findhero/resources/user-img/${ applylist.userImage }" 
+												style="width: 100%; height: 300px; "
 												alt="" class="img-fluid"
 												onerror="this.src = '/findhero/resources/rsimg/noimg.png'">
 										</div>

@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>EstateAgency Bootstrap Template</title>
+<title>fiNdhErO</title>
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <meta content="" name="keywords">
 <meta content="" name="description">
@@ -85,7 +85,7 @@
 								<!-- 히어로사진-->
 							<div class="agent-avatar-box">
 							
-								<img src="/findhero/resources/rsimg/noimg.png" alt="" class="img-d img-fluid"
+								<img src="/findhero/resources/rsimg/noimg.png" style="width: 100%; height: 300px;" alt="" class="img-d img-fluid"
 								 onerror="this.src = '/findhero/resources/rsimg/noimg.png'"> 
 							</div>
 							<!-- 히어로사진 끝 -->
@@ -190,7 +190,7 @@
              <c:forEach var="review" items="${reviewList}">
               <li>
                 <div class="comment-avatar">
-                 <img src="/findhero/resources/rsimg/noimg.png" alt="" class="img-d img-fluid" 
+                 <img src="/findhero/resources/rsimg/noimg.png" style="width: 100%; height: 300px;" alt="" class="img-d img-fluid" 
                  onerror="this.src = '/findhero/resources/rsimg/noimg.png'">
                 </div>
                 <div class="comment-details">

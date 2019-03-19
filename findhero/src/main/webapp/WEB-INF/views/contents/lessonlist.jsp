@@ -560,7 +560,7 @@
 							<div class="col-md-4">
 								<div class="card-box-d">
 									<div class="img-box-d">
-										<img src="/findhero/resources/hero-img/${hero.heroImage }"
+										<img src="/findhero/resources/hero-img/${hero.heroImage }" style="width: 100%; height: 300px;"
 											alt="" class="img-d img-fluid"
 											onerror="this.src = '/findhero/resources/rsimg/noimg.png'">
 									</div>
@@ -630,7 +630,7 @@
 								<div class="card-box-b card-shadow news-box">
 									<div class="img-box-b">
 										<img
-											src="/findhero/resources/hero-img/${ heroes[stat.index].heroImage }"
+											src="/findhero/resources/hero-img/${ heroes[stat.index].heroImage }" style="width: 100%; height: 300px;"
 											alt="" class="img-b img-fluid"
 											onerror="this.src = '/findhero/resources/rsimg/noimg.png'">
 									</div>
